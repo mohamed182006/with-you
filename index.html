@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>معاك | سرعة.أمان.ثقة</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <!-- ربط ملف التنسيقات -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="app-container">
+    <!-- ==================== HOME SCREEN ==================== -->
+    <div id="home-screen" class="screen active">
+        <header class="header">
+            <div class="logo-container">
+                <div class="logo-icon"><img src="logo.png" alt="logo"></div>
+                <div>
+                    <span class="logo-text">معاك</span>
+                    <span class="logo-sub">سرعة.أمان.ثقة  </span>
+                </div>
+            </div>
+            <button class="cart-badge-btn" onclick="openCart()">
+                🛒
+                <span class="cart-count" id="cart-badge-count">0</span>
+            </button>
+        </header>
+
+        <div class="info-banner">
+            <div class="info-banner-icon">🚚</div>
+            <div class="info-banner-text">
+                <p>رسوم التوصيل الموحدة</p>
+                <p>0.500 ر.ع فقط حتى مسافة 5 كم</p>
+                <p>0.800 ر.ع فقط حتى مسافة 10 كم</p>
+            </div>
+        </div>
+        
+        <!-- إضافة اختيار المنطقة -->
+        <div class="location-selector">
+            <button class="loc-btn active" onclick="setLocation('سناو')">سناو</button>
+            <button class="loc-btn" onclick="setLocation('إبراء')">إبراء</button>
+        </div>
+
+        <div class="section-title">الأقسام الرئيسية</div>
+        <div class="categories-scroll" id="categories-container"></div>
+
+        <div class="section-title">المطاعم والمحلات</div>
+        <div class="vendors-grid" id="vendors-container"></div>
+
+        <div class="custom-order-box">
+            <h4>هل تبحث عن شيء محدد؟</h4>
+            <p>اطلب أي شيء غير موجود في التطبيق وسنقوم بتوفيره وتوصيله لك.</p>
+            <a href="#" class="btn-whatsapp-custom" onclick="openCustomWhatsApp(event)">
+                اطلب الآن
+            </a>
+        </div>
+    </div>
+
+    <!-- ==================== STORE SCREEN ==================== -->
+    <div id="store-screen" class="screen">
+        <div class="sub-header">
+            <button class="back-btn" onclick="showScreen('home-screen')">➔</button>
+            <div class="sub-header-title" id="store-nav-title">المتجر</div>
+            <button class="cart-badge-btn" onclick="openCart()" style="background:rgba(255,255,255,0.2); color:white;">
+                🛒
+                <span class="cart-count" id="store-cart-badge">0</span>
+            </button>
+        </div>
+
+        <div class="store-hero" id="store-hero-bg">
+            <div class="store-hero-overlay"></div>
+        </div>
+
+        <div class="store-header-info">
+            <img src="" id="store-avatar-img" class="store-avatar" alt="logo">
+            <div class="store-name" id="store-detail-name">...</div>
+            <div class="store-meta">
+                <span class="store-badge" id="store-detail-cat">...</span>
+                <span>⭐ 4.5 (320 تقييم)</span>
+                <span>⏱️ 10 ص - 12 ليلاً</span>
+            </div>
+        </div>
+
+        <div class="section-title">المنتجات والأصناف</div>
+        <div class="products-list" id="products-container"></div>
+
+        <div id="floating-cart-trigger" class="floating-cart-bar" style="display:none;" onclick="openCart()">
+            <span id="floating-cart-items">0 منتجات</span>
+            <span>عرض السلة</span>
+            <span id="floating-cart-total">0.000 ر.ع</span>
+        </div>
+    </div>
+
+    <!-- ==================== CART SCREEN ==================== -->
+    <div id="cart-screen" class="screen">
+        <div class="sub-header">
+            <button class="back-btn" onclick="showScreen('store-screen')">➔</button>
+            <div class="sub-header-title">سلة الطلبات</div>
+        </div>
+
+        <div id="cart-empty-msg" style="text-align: center; padding: 40px 20px; color: var(--text-muted); display: none;">
+            السلة فارغة حالياً
+        </div>
+
+        <div id="cart-content">
+            <div class="cart-items-container" id="cart-items-list"></div>
+
+            <div class="cart-summary">
+                <div class="summary-row">
+                    <span>إجمالي المنتجات</span>
+                    <span id="cart-subtotal">0.000 ر.ع</span>
+                </div>
+               
+                <div class="summary-row">
+                    <span>رسوم التوصيل (0.500 ر.ع حتى 5 كم | 0.800 ر.ع حتى 10 كم)</span>
+                    <span>0.500 ر.ع</span>
+                </div>
+                <div class="summary-row total">
+                    <span>الإجمالي الكلي</span>
+                    <span id="cart-grandtotal">0.000 ر.ع</span>
+                </div>
+            </div>
+
+            <div class="cart-footer-btn">
+                <button class="btn-whatsapp-custom" onclick="sendBulkWhatsAppOrder(event)">
+                    اطلب الآن
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Alert for Store Conflict -->
+<div class="modal-overlay" id="conflict-modal">
+    <div class="modal-card">
+        <h3>تنبيه السلة</h3>
+        <p>السلة تحتوي على منتجات من مطعم آخر. هل تريد إفراغ السلة وإضافة هذا المنتج؟</p>
+        <div class="modal-btns">
+            <button class="modal-btn btn-confirm" id="btn-modal-clear">إفراغ وإضافة</button>
+            <button class="modal-btn btn-cancel" onclick="closeModal()">إلغاء</button>
+        </div>
+    </div>
+</div>
+
+<!-- ربط ملف الجافاسكريبت -->
+<script src="script.js"></script>
+</body>
+</html>
