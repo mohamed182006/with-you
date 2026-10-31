@@ -1,5 +1,5 @@
 // ==================== DATA BASE ====================
-const WHATSAPP_NUMBER = "968 7859 2084";
+const WHATSAPP_NUMBER = "968 9672 8224";
 const categories = [
     { 
         id: "all", 
